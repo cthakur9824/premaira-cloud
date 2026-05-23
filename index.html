@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premaira Cloud — DevOps, Cloud, Blockchain, EDI Healthcare & Retail Solutions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        /* ── Reset & Base ── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1a1a2e;
+            background: #f8f9fc;
+            line-height: 1.6;
+        }
+        a { text-decoration: none; color: inherit; }
+        img { max-width: 100%; display: block; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* ── Navbar ── */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,.06);
+            transition: box-shadow .3s;
+        }
+        .navbar.scrolled { box-shadow: 0 2px 24px rgba(0,0,0,.08); }
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo i { color: #4f46e5; font-size: 1.6rem; }
+        .logo span { color: #4f46e5; }
+        .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
+        .nav-links a {
+            font-size: .9rem;
+            font-weight: 500;
+            color: #475569;
+            transition: color .25s;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background: #4f46e5;
+            transition: width .3s;
+        }
+        .nav-links a:hover { color: #4f46e5; }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-cta {
+            background: #4f46e5;
+            color: #fff !important;
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background .25s, transform .25s;
+        }
+        .nav-cta::after { display: none !important; }
+        .nav-cta:hover { background: #4338ca; transform: translateY(-1px); }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+        .hamburger span {
+            display: block;
+            width: 24px; height: 2.5px;
+            background: #1a1a2e;
+            border-radius: 2px;
+            transition: .3s;
+        }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        /* ── Hero ── */
+        .hero {
+            padding: 160px 0 100px;
+            background: linear-gradient(135deg, #f8f9fc 0%, #eef2ff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -40%; right: -20%;
+            width: 700px; height: 700px;
+            background: radial-gradient(circle, rgba(79,70,229,.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .hero .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        .hero-content h1 {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+        }
+        .hero-content h1 .highlight {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-content p {
+            font-size: 1.1rem;
+            color: #64748b;
+            max-width: 520px;
+            margin-bottom: 32px;
+        }
+        .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+        .btn-primary, .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: .95rem;
+            transition: background .25s, transform .25s, box-shadow .25s;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-primary {
+            background: #4f46e5;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: #4338ca;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(79,70,229,.35);
+        }
+        .btn-outline {
+            background: transparent;
+            color: #4f46e5;
+            border: 2px solid #4f46e5;
+        }
+        .btn-outline:hover {
+            background: #4f46e5;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+        .hero-visual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .hero-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 28px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,.04);
+            border: 1px solid rgba(0,0,0,.04);
+            transition: transform .3s, box-shadow .3s;
+        }
+        .hero-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(79,70,229,.12);
+        }
+        .hero-card i {
+            font-size: 2.4rem;
+            margin-bottom: 12px;
+        }
+        .hero-card:nth-child(1) i { color: #2563eb; }
+        .hero-card:nth-child(2) i { color: #7c3aed; }
+        .hero-card:nth-child(3) i { color: #059669; }
+        .hero-card:nth-child(4) i { color: #e11d48; }
+        .hero-card:nth-child(5) i { color: #ea580c; }
+        .hero-card:nth-child(6) i { color: #d97706; }
+        .hero-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
+        .hero-card p { font-size: .82rem; color: #94a3b8; }
+        .hero-card:last-child { grid-column: 1 / -1; }
+
+        /* ── Section Shared ── */
+        section { padding: 100px 0; }
+        .section-label {
+            display: inline-block;
+            font-size: .8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #4f46e5;
+            margin-bottom: 8px;
+        }
+        .section-title {
+            font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+            font-weight: 800;
+            letter-spacing: -.5px;
+            margin-bottom: 16px;
+        }
+        .section-sub {
+            color: #64748b;
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin-bottom: 56px;
+        }
+        .text-center { text-align: center; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+
+        /* ── Services ── */
+        #services { background: #fff; }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 28px;
+        }
+        .service-card {
+            background: #f8f9fc;
+            border-radius: 16px;
+            padding: 36px 28px;
+            border: 1px solid transparent;
+            transition: border-color .3s, transform .3s, box-shadow .3s;
+        }
+        .service-card:hover {
+            border-color: #e0e7ff;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(79,70,229,.08);
+        }
+        .service-icon {
+            width: 56px; height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .service-card:nth-child(1) .service-icon { background: #eef2ff; color: #4f46e5; }
+        .service-card:nth-child(2) .service-icon { background: #faf5ff; color: #7c3aed; }
+        .service-card:nth-child(3) .service-icon { background: #ecfdf5; color: #059669; }
+        .service-card:nth-child(4) .service-icon { background: #fff1f2; color: #e11d48; }
+        .service-card:nth-child(5) .service-icon { background: #fff7ed; color: #ea580c; }
+        .service-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; }
+        .service-card p {
+            color: #64748b;
+            font-size: .92rem;
+            margin-bottom: 20px;
+        }
+        .service-features { list-style: none; }
+        .service-features li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: .88rem;
+            color: #475569;
+            padding: 6px 0;
+        }
+        .service-features li i { color: #22c55e; font-size: .8rem; }
+
+        /* ── Why Us ── */
+        #why-us { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #fff; }
+        #why-us .section-label { color: #a5b4fc; }
+        #why-us .section-sub { color: #94a3b8; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-bottom: 56px;
+        }
+        .stat-card {
+            text-align: center;
+            background: rgba(255,255,255,.05);
+            border-radius: 16px;
+            padding: 32px 16px;
+            border: 1px solid rgba(255,255,255,.08);
+        }
+        .stat-card i {
+            font-size: 2rem;
+            color: #818cf8;
+            margin-bottom: 12px;
+        }
+        .stat-card h4 {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+        .stat-card p { color: #94a3b8; font-size: .9rem; }
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+        }
+        .why-item {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        .why-item i {
+            font-size: 1.2rem;
+            color: #818cf8;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+        .why-item h4 { font-size: 1rem; margin-bottom: 6px; }
+        .why-item p { font-size: .88rem; color: #94a3b8; line-height: 1.5; }
+
+        /* ── Process ── */
+        #process { background: #fff; }
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+            counter-reset: step;
+        }
+        .step {
+            text-align: center;
+            padding: 32px 16px;
+            border-radius: 16px;
+            position: relative;
+            counter-increment: step;
+        }
+        .step::before {
+            content: counter(step);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px; height: 44px;
+            margin: 0 auto 16px;
+            background: #eef2ff;
+            color: #4f46e5;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .step i {
+            font-size: 2rem;
+            color: #4f46e5;
+            margin-bottom: 14px;
+            display: block;
+        }
+        .step h4 { font-size: 1.05rem; margin-bottom: 8px; }
+        .step p { font-size: .88rem; color: #64748b; }
+
+        /* ── Contact ── */
+        #contact { background: #f8f9fc; }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: start;
+        }
+        .contact-info h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 16px; }
+        .contact-info > p { color: #64748b; margin-bottom: 32px; }
+        .contact-detail {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .contact-detail i {
+            width: 44px; height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eef2ff;
+            color: #4f46e5;
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+        .contact-detail h4 { font-size: .95rem; margin-bottom: 2px; }
+        .contact-detail p { font-size: .88rem; color: #64748b; }
+        .contact-form {
+            background: #fff;
+            border-radius: 16px;
+            padding: 36px;
+            box-shadow: 0 4px 24px rgba(0,0,0,.04);
+            border: 1px solid #e2e8f0;
+        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label {
+            display: block;
+            font-size: .85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #334155;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: .9rem;
+            transition: border-color .25s, box-shadow .25s;
+            outline: none;
+            background: #f8f9fc;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79,70,229,.12);
+        }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        .contact-form .btn-primary { width: 100%; justify-content: center; font-size: 1rem; padding: 16px; }
+
+        /* ── Footer ── */
+        footer {
+            background: #1a1a2e;
+            color: #cbd5e1;
+            padding: 48px 0 24px;
+        }
+        footer .container {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+        footer h4 { color: #fff; font-size: 1rem; margin-bottom: 16px; }
+        footer p { font-size: .88rem; line-height: 1.6; }
+        footer ul { list-style: none; }
+        footer ul li { margin-bottom: 10px; }
+        footer ul a {
+            font-size: .88rem;
+            color: #94a3b8;
+            transition: color .25s;
+        }
+        footer ul a:hover { color: #818cf8; }
+        .footer-social { display: flex; gap: 12px; margin-top: 16px; }
+        .footer-social a {
+            width: 38px; height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,.06);
+            border-radius: 10px;
+            color: #94a3b8;
+            transition: background .25s, color .25s;
+        }
+        .footer-social a:hover { background: #4f46e5; color: #fff; }
+        .footer-bottom {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,.08);
+            font-size: .82rem;
+            color: #64748b;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px; left: 0; right: 0;
+                background: rgba(255,255,255,.98);
+                backdrop-filter: blur(12px);
+                flex-direction: column;
+                padding: 24px;
+                gap: 20px;
+                border-bottom: 1px solid #e2e8f0;
+                transform: translateY(-110%);
+                transition: transform .35s ease;
+            }
+            .nav-links.open { transform: translateY(0); }
+            .hamburger { display: flex; }
+            .hero .container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .hero { padding: 120px 0 60px; }
+            .hero-content p { max-width: 100%; }
+            .hero-visual { grid-template-columns: 1fr 1fr; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            footer .container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 480px) {
+            .hero-visual { grid-template-columns: 1fr; }
+            .hero-card:last-child { grid-column: 1; }
+            .services-grid { grid-template-columns: 1fr; }
+            footer .container { grid-template-columns: 1fr; }
+            .contact-form { padding: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══ Navbar ═══ -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="#" class="logo">
+                <i class="fas fa-cloud-arrow-up"></i>
+                Premaira <span>Cloud</span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#services">Services</a></li>
+                <li><a href="#why-us">Why Us</a></li>
+                <li><a href="#process">Process</a></li>
+                <li><a href="#contact" class="nav-cta">Get in Touch</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ═══ Hero ═══ -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>
+                    Infrastructure &amp; Digital<br>
+                    Innovation
+                </h1>
+                <p>
+                    We help businesses accelerate with DevOps automation, cloud-native
+                    architecture, blockchain solutions, EDI healthcare integration,
+                    and retail technology. From strategy to execution —
+                    we build the foundation for your next chapter.
+                </p>
+                <div class="hero-btns">
+                    <a href="#contact" class="btn-primary">
+                        Start a Project <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="#services" class="btn-outline">
+                        Explore Services
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-card">
+                    <i class="fas fa-arrows-spin"></i>
+                    <h3>CI/CD Pipelines</h3>
+                    <p>Automated delivery in minutes</p>
+                </div>
+                <div class="hero-card">
+                    <i class="fas fa-cloud"></i>
+                    <h3>Multi-Cloud</h3>
+                    <p>AWS &middot; Azure &middot; GCP</p>
+                </div>
+                <div class="hero-card">
+                    <i class="fas fa-link"></i>
+                    <h3>Smart Contracts</h3>
+                    <p>Solidity &amp; Rust auditing</p>
+                </div>
+                <div class="hero-card">
+                    <i class="fas fa-heart-pulse"></i>
+                    <h3>EDI Healthcare</h3>
+                    <p>HIPAA &middot; X12 &middot; 837/835</p>
+                </div>
+                <div class="hero-card">
+                    <i class="fas fa-cart-shopping"></i>
+                    <h3>Retail Solutions</h3>
+                    <p>Omnichannel &amp; POS systems</p>
+                </div>
+                <div class="hero-card">
+                    <i class="fas fa-gauge-high"></i>
+                    <p><strong>99.9%</strong> uptime &middot; <strong>3×</strong> faster deployments</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ Services ═══ -->
+    <section id="services">
+        <div class="container text-center">
+            <span class="section-label">What We Do</span>
+            <h2 class="section-title">Specialized Consulting Services</h2>
+            <p class="section-sub mx-auto">
+                Deep expertise across five domains. We don't just consult — we build,
+                automate, and ship alongside your team.
+            </p>
+        </div>
+        <div class="container">
+            <div class="services-grid">
+
+                <!-- DevOps -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-infinity"></i></div>
+                    <h3>DevOps &amp; Platform Engineering</h3>
+                    <p>
+                        End-to-end automation that replaces fragile manual processes with
+                        repeatable, auditable pipelines.
+                    </p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> CI/CD pipeline design &amp; optimization</li>
+                        <li><i class="fas fa-check"></i> Kubernetes &amp; Docker orchestration</li>
+                        <li><i class="fas fa-check"></i> Infrastructure as Code (Terraform, Pulumi)</li>
+                        <li><i class="fas fa-check"></i> Observability &amp; SRE practices</li>
+                        <li><i class="fas fa-check"></i> GitOps &amp; ArgoCD workflows</li>
+                    </ul>
+                </div>
+
+                <!-- Cloud -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-cloud"></i></div>
+                    <h3>Cloud Architecture</h3>
+                    <p>
+                        Design, migrate, and optimize workloads across AWS, Azure, and GCP
+                        with security and cost-efficiency built in.
+                    </p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Cloud migration &amp; modernization</li>
+                        <li><i class="fas fa-check"></i> Serverless &amp; event-driven architecture</li>
+                        <li><i class="fas fa-check"></i> Multi-cloud &amp; hybrid strategies</li>
+                        <li><i class="fas fa-check"></i> Cost optimization &amp; FinOps</li>
+                        <li><i class="fas fa-check"></i> Cloud security &amp; compliance</li>
+                    </ul>
+                </div>
+
+                <!-- Blockchain -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-link"></i></div>
+                    <h3>Blockchain &amp; Web3</h3>
+                    <p>
+                        From smart contracts to full dApps — we help you navigate
+                        the decentralized landscape with production-grade engineering.
+                    </p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Smart contract development &amp; auditing</li>
+                        <li><i class="fas fa-check"></i> Decentralized application (dApp) design</li>
+                        <li><i class="fas fa-check"></i> Layer-2 scaling &amp; interoperability</li>
+                        <li><i class="fas fa-check"></i> Tokenomics &amp; protocol consulting</li>
+                        <li><i class="fas fa-check"></i> Web3 infrastructure &amp; node ops</li>
+                    </ul>
+                </div>
+
+                <!-- EDI Healthcare -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-heart-pulse"></i></div>
+                    <h3>EDI Healthcare Solutions</h3>
+                    <p>
+                        Secure, compliant EDI integration for healthcare providers,
+                        payers, and clearinghouses — built for HIPAA environments.
+                    </p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> X12 transaction sets (837, 835, 834, 270/271)</li>
+                        <li><i class="fas fa-check"></i> HIPAA-compliant data exchange &amp; portal development</li>
+                        <li><i class="fas fa-check"></i> EHR/EMR integration (Epic, Cerner, Meditech)</li>
+                        <li><i class="fas fa-check"></i> Claims management &amp; remittance automation</li>
+                        <li><i class="fas fa-check"></i> Value-added network (VAN) &amp; direct-connect setup</li>
+                    </ul>
+                </div>
+
+                <!-- Retail -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fas fa-cart-shopping"></i></div>
+                    <h3>Retail Solution Provider</h3>
+                    <p>
+                        Modern retail technology built to unify online and in-store
+                        experiences, streamline supply chains, and drive revenue.
+                    </p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Omnichannel commerce &amp; POS systems</li>
+                        <li><i class="fas fa-check"></i> Inventory &amp; supply chain optimization</li>
+                        <li><i class="fas fa-check"></i> EDI retail compliance (850, 856, 810)</li>
+                        <li><i class="fas fa-check"></i> Customer analytics &amp; personalization engines</li>
+                        <li><i class="fas fa-check"></i> Marketplace &amp; B2B portal integration</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ Why Us ═══ -->
+    <section id="why-us">
+        <div class="container text-center">
+            <span class="section-label">Why Premaira Cloud</span>
+            <h2 class="section-title" style="color:#fff;">Built by Engineers,<br>Trusted by Enterprises</h2>
+            <p class="section-sub mx-auto">
+                We've shipped production infrastructure for fintech, health-tech, retail,
+                and SaaS companies. Our work speaks through results.
+            </p>
+        </div>
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-rocket"></i>
+                    <h4>120+</h4>
+                    <p>Projects Delivered</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-building"></i>
+                    <h4>48</h4>
+                    <p>Enterprise Clients</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-users-gear"></i>
+                    <h4>99%</h4>
+                    <p>Client Retention</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-globe"></i>
+                    <h4>12</h4>
+                    <p>Countries Served</p>
+                </div>
+            </div>
+            <div class="why-grid">
+                <div class="why-item">
+                    <i class="fas fa-helmet-safety"></i>
+                    <div>
+                        <h4>Production-First Mindset</h4>
+                        <p>Everything we build is designed for observability, resilience, and real-world traffic from day one.</p>
+                    </div>
+                </div>
+                <div class="why-item">
+                    <i class="fas fa-handshake"></i>
+                    <div>
+                        <h4>Embedded Collaboration</h4>
+                        <p>We work inside your team, not in a silo. Knowledge transfer is baked into every engagement.</p>
+                    </div>
+                </div>
+                <div class="why-item">
+                    <i class="fas fa-lock"></i>
+                    <div>
+                        <h4>Security by Default</h4>
+                        <p>Zero-trust architecture, SOC 2 aligned controls, and rigorous compliance practices.</p>
+                    </div>
+                </div>
+                <div class="why-item">
+                    <i class="fas fa-chart-line"></i>
+                    <div>
+                        <h4>Measurable Outcomes</h4>
+                        <p>We define success in hard metrics — deploy frequency, MTTR, cost savings, and uptime.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ Process ═══ -->
+    <section id="process">
+        <div class="container text-center">
+            <span class="section-label">How We Work</span>
+            <h2 class="section-title">From Discovery to Delivery</h2>
+            <p class="section-sub mx-auto">
+                A proven 4-phase approach that de-risks your investment and
+                ensures measurable outcomes at every stage.
+            </p>
+        </div>
+        <div class="container">
+            <div class="process-steps">
+                <div class="step">
+                    <i class="fas fa-compass"></i>
+                    <h4>Discovery</h4>
+                    <p>We audit your current stack, pain points, and goals to build a tailored roadmap.</p>
+                </div>
+                <div class="step">
+                    <i class="fas fa-pen-ruler"></i>
+                    <h4>Design</h4>
+                    <p>Architecture review, PoC validation, and detailed implementation planning.</p>
+                </div>
+                <div class="step">
+                    <i class="fas fa-code"></i>
+                    <h4>Build</h4>
+                    <p>Agile delivery with CI/CD, automated testing, and weekly progress demos.</p>
+                </div>
+                <div class="step">
+                    <i class="fas fa-gauge-high"></i>
+                    <h4>Optimize</h4>
+                    <p>Monitoring setup, knowledge transfer, and ongoing optimization as needed.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ Contact ═══ -->
+    <section id="contact">
+        <div class="container text-center">
+            <span class="section-label">Get in Touch</span>
+            <h2 class="section-title">Let's Build Something Great</h2>
+            <p class="section-sub mx-auto">
+                Tell us about your project. We'll get back within one business day
+                with a proposed approach and estimated timeline.
+            </p>
+        </div>
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Let's Talk</h3>
+                    <p>
+                        Whether you need a full infrastructure overhaul, a targeted blockchain
+                        audit, EDI healthcare integration, or retail technology — we're here to help.
+                    </p>
+                    <div class="contact-detail">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>hello@premairacloud.io</p>
+                        </div>
+                    </div>
+                    <div class="contact-detail">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>+1 (555) 123-4567</p>
+                        </div>
+                    </div>
+                    <div class="contact-detail">
+                        <i class="fas fa-location-dot"></i>
+                        <div>
+                            <h4>Office</h4>
+                            <p>600 Congress Ave, Austin, TX 78701</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form" onsubmit="event.preventDefault(); handleForm(this);">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" placeholder="Jane Smith" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="jane@company.com" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="service">Service Interested In</label>
+                        <select id="service">
+                            <option value="">Select a service...</option>
+                            <option value="devops">DevOps &amp; Platform Engineering</option>
+                            <option value="cloud">Cloud Architecture</option>
+                            <option value="blockchain">Blockchain &amp; Web3</option>
+                            <option value="healthcare">EDI Healthcare Solutions</option>
+                            <option value="retail">Retail Solutions</option>
+                            <option value="other">Other / Not Sure</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Tell Us About Your Project</label>
+                        <textarea id="message" placeholder="Describe your goals, timeline, and any specific challenges..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        Send Message <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ Footer ═══ -->
+    <footer>
+        <div class="container">
+            <div>
+                <a href="#" class="logo" style="font-size:1.2rem;">
+                    <i class="fas fa-cloud-arrow-up"></i>
+                    Premaira <span>Cloud</span>
+                </a>
+                <p style="margin-top:12px;color:#94a3b8;">
+                    DevOps, cloud, blockchain, EDI healthcare, and retail consulting
+                    for organizations ready to build at the speed of modern infrastructure.
+                </p>
+                <div class="footer-social">
+                    <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#">DevOps</a></li>
+                    <li><a href="#">Cloud Architecture</a></li>
+                    <li><a href="#">Blockchain &amp; Web3</a></li>
+                    <li><a href="#">EDI Healthcare</a></li>
+                    <li><a href="#">Retail Solutions</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Press</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 Premaira Cloud. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ── Hamburger toggle ──
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('open');
+        });
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('open');
+            });
+        });
+
+        // ── Navbar shadow on scroll ──
+        window.addEventListener('scroll', () => {
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+        });
+
+        // ── Form handler ──
+        function handleForm(form) {
+            const btn = form.querySelector('.btn-primary');
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            btn.disabled = true;
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check-circle"></i> Message Sent!';
+                btn.style.background = '#22c55e';
+                setTimeout(() => {
+                    btn.innerHTML = orig;
+                    btn.style.background = '';
+                    btn.disabled = false;
+                    form.reset();
+                }, 2500);
+            }, 1200);
+        }
+
+        // ── Smooth counter animation (Why Us stats) ──
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelectorAll('.stat-card h4').forEach(el => {
+                        const raw = el.textContent.replace(/[+,]/g, '');
+                        const target = parseInt(raw, 10);
+                        if (isNaN(target)) return;
+                        const suffix = el.textContent.includes('+') ? '+' : el.textContent.includes('%') ? '%' : '';
+                        let current = 0;
+                        const step = Math.max(1, Math.floor(target / 40));
+                        const iv = setInterval(() => {
+                            current += step;
+                            if (current >= target) { current = target; clearInterval(iv); }
+                            el.textContent = current.toLocaleString() + suffix;
+                        }, 30);
+                    });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: .4 });
+        const whySection = document.getElementById('why-us');
+        if (whySection) observer.observe(whySection);
+    </script>
+</body>
+</html>
